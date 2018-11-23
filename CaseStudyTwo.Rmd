@@ -1,0 +1,31 @@
+---
+title: "Case_Study_2"
+author: "Michael Tieu"
+date: "11/22/2018"
+output: 
+  html_document:
+    keep_rmd: TRUE
+---
+
+```{r, echo=TRUE}
+library(ggplot2)
+
+eda <- read.csv('CaseStudy2-data.csv')
+eda_arranged <- eda[,c(1,3,2,4:length(names(eda)))]
+
+plot_this <- function(data = eda_arranged)
+{
+ i = 3
+ while (i <= length(names(data)))
+ {
+ Holder <- data.frame(table(data[,i], data[,2]))
+ names(Holder) <- c("Variable", "Attrited", "Frequency")
+ 
+  graph <- ggplot(Holder, aes(fill=Attrited, y=Frequency, x=Variable)) +  geom_bar(stat="identity") + theme(axis.text.x=element_text(angle=90)) + ggtitle(paste("Attrition Rates in " , names(data[i]), sep="")) + xlab(paste(names(data[i]))) + ylab(paste(names(Holder[3]))) + theme(plot.title = element_text(hjust = 0.5))
+  print(graph)
+ i = i+1
+ }
+}
+
+plot_this(eda_arranged)
+```
